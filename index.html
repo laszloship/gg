@@ -7,10 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
 <style>
     :root {
-        --env-color: #f43f5e; 
-        --env-dark: #be123c;  
+        --env-color: #f43f5e;   /* Rose 500 */
+        --env-dark: #be123c;    /* Rose 700 */
         --line-color: #9f1239;  /* Rose 800 (Darker red line) */
         --paper-color: #fffaf0;
+        --body-color: #e6faff;  /*  */
+    }
+
+    body {
+        background: var(--body-color);
     }
 
     .envelope-wrapper {
@@ -20,16 +25,31 @@
         /* Positions the envelope toward the bottom */
         align-items: flex-end; 
         /* Adjust this padding to move it higher or lower from the edge */
-        padding-bottom: 100px; 
+        padding-bottom: 60px; 
         height: 100vh;
         /* Keeps the animation clean if the letter goes high */
         overflow: hidden; 
     }
 
+    /* THE BLANKET: Hides the letter peeking out the bottom */
+    .envelope-wrapper::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        /* Match the padding-bottom of the wrapper */
+        height: 60px; 
+        /* Match your page background color exactly */
+        background: var(--body-color);
+        /* Sits above the letter but below the envelope */
+        z-index: 2; 
+    }
+
     .envelope {
         position: relative;
-        width: 300px;
-        height: 200px;
+        width: 360px;
+        height: 240px;
         background: var(--env-dark);
         border-radius: 0 0 8px 8px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -45,7 +65,12 @@
         clip-path: polygon(0 0, 50% 50%, 100% 0);
         transform-origin: top;
         z-index: 3;
-        transition: transform 1.5s ease-in-out, z-index 0s 0.75s;
+        /*transition: transform 1.5s ease-in-out, z-index 0s 0.75s;*/
+        /*transition: transform 3s ease-in-out, z-index 0s 1.5s;*/
+        transition: 
+            transform 2s ease-in-out, 
+            background-color 0s 1.0s, 
+            z-index 0s 1.0s;
     }
 
     /* 2. THE FRONT POCKET (Solid Face) */
@@ -66,7 +91,7 @@
         /* We use a slightly darker color for the line */
         background-color: var(--line-color);
         /* The same path, but we move the points slightly to create a 2px offset */
-        clip-path: polygon(0 0%, 50% 50%, 100% 0%, 100% 1%, 50% 51%, 0 1%);
+        clip-path: polygon(0 0%, 50% 50%, 100% 0%, 100% 2%, 50% 52%, 0 2%);
         z-index: 2;
     }
 
@@ -74,22 +99,34 @@
     .letter {
         position: absolute;
         /* Anchor to top so extra length stays hidden inside the envelope body */
-        top: 10%; 
-        left: 5%;
-        width: 90%;
+        top: 5%; 
+        left: 3%;
+        width: 94%;
         /* Let height expand, but the pocket hides the excess */
         height: auto;
         min-height: 180px;
         background: var(--paper-color);
-        padding: 20px;
+        padding: 10px;
         z-index: 1; 
-        transition: transform 1s ease-in-out 0.8s;
+        /*transition: transform 1s ease-in-out 0.8s;*/
+        transition: transform 1.0s ease-in-out 1.25s; /* go in and out ... wait */
     }
 
     /* --- THE MOTION --- */
+
+    /* --- OPEN STATE --- */
     .envelope.open .flap {
         transform: rotateX(180deg);
+        background-color: var(--env-dark); /* Swap to dark at 0.75s */
         z-index: 0;
+    }
+    /* --- CLOSING STATE --- */
+    /* When closing, we want the color to swap back at the same halfway point */
+    .envelope:not(.open) .flap {
+        transition: 
+            transform 2s ease-in-out, 
+            background-color 0s 1.0s, 
+            z-index 0s 1.0s;
     }
 
     .envelope.open .letter {
@@ -101,21 +138,44 @@
     .envelope:not(.open) .letter {
         transition-delay: 0s;
     }
+
+    .instruction {
+        position: absolute;
+        width: 100%;
+        /*top: 60%;*/ /* Positioned in the lower half */
+        bottom: 5px;
+        text-align: center;
+        font-family: 'Arial', sans-serif;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.9); /* Subtle semi-transparent white */
+        z-index: 3;
+        pointer-events: none; /* Ensures the click still hits the envelope */
+        transition: opacity 1.0s ease;
+    }
+
+    /* Optional: Hide the instruction once the envelope is open */
+    .envelope.open .instruction {
+        opacity: 0;
+    }
+
 </style>
 </head>
-<body class="bg-rose-50 flex flex-col items-center justify-center min-h-screen p-4">
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
 
     <div class="envelope-wrapper" onclick="openEnvelope()">
         <div id="envelope" class="envelope">
             <div class="flap"></div>
+            <div class="instruction">Click envelope to open and close</div>
             <div class="letter shadow-inner text-gray-800">
-                <p id="date-label" class="text-[10px] uppercase tracking-widest text-rose-400 font-bold mb-2"></p>
+                <p id="date-label" class="text-[10px] uppercase tracking-widest text-rose-500 font-bold mb-2"></p>
                 <p id="message-text" class="font-serif leading-tight"></p>
             </div>
         </div>
     </div>
 
-    <p id="instruction" class="mt-32 text-rose-400 font-medium animate-pulse">Click to open</p>
+    <!--<p id="instruction" class="_mt-32 text-rose-400 font-medium animate-pulse">Click to open</p>-->
 
     <script>
     /*const MESSAGES = {
@@ -128,28 +188,6 @@
 	    "2026-04-22": `
 	        <div class="text-center">
 	            <h3 class="text-lg font-bold">Good morning, G!</h3>
-	            <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <p class="mt-2">I am so proud of your hard work today.</p>
                 <p class="mt-2">I am so proud of your hard work today.</p>
 	            <img src="heart.png" class="w-8 mx-auto mt-4">
                 <h3 class="text-lg font-bold">Good morning, G!</h3>
@@ -202,16 +240,18 @@
 	console.log("Current Timezone Offset:", new Date().getTimezoneOffset());
 
 	// 1. Get the current date in YYYY-MM-DD format for France
-	const dateOptions = { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' };
+	//const dateOptions = { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' };
+    const dateOptions = { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' };
 	const today = new Intl.DateTimeFormat('en-CA', dateOptions).format(new Date());
 
 	// 2. Get the full local time in France (HH:MM:SS)
-	const timeOptions = { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+	//const timeOptions = { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    const timeOptions = { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
 	const franceTime = new Intl.DateTimeFormat('en-GB', timeOptions).format(new Date());
 
 	console.log("Your Local Time (MDT):", new Date().toString());
-	console.log("Current Date in France:", today);
-	console.log("Current Time in France:", franceTime);
+	console.log("Current Date for GG in France:", today);
+	console.log("Current Time for GG in France:", franceTime);
 
 	// 3. Initialize UI
 	const messageDisplay = document.getElementById('message-text');
