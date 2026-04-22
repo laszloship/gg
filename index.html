@@ -121,6 +121,10 @@
 
         dateDisplay.innerText = today.replace(/-/g, '.');
         messageDisplay.innerText = MESSAGES[today] || "Check back tomorrow for a new note! ❤️";
+
+	console.log("UTC ISO String:", new Date().toISOString());
+	console.log("Local Date String:", new Date().toLocaleDateString());
+	console.log("Current Timezone Offset:", new Date().getTimezoneOffset());
     </script>
 </body>
 </html>
