@@ -131,7 +131,7 @@
 
     .envelope.open .letter {
         /* Adjust this based on how much of the note you want to see */
-        transform: translateY(-320px); /* UPDATE! */
+        transform: translateY(-360px); /* UPDATE! */
     }
 
     /* Immediate drop on close */
@@ -146,7 +146,8 @@
         bottom: 5px;
         text-align: center;
         font-family: 'Arial', sans-serif;
-        font-size: 0.75rem;
+        font-size: 1rem;
+        font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 1px;
         color: rgba(255, 255, 255, 0.9); /* Subtle semi-transparent white */
@@ -206,7 +207,7 @@
     <div class="envelope-wrapper" onclick="openEnvelope()">
         <div id="envelope" class="envelope">
             <div class="flap"></div>
-            <div class="instruction">Click envelope to open and close</div>
+            <div class="instruction">Click envelope to open/close</div>
             <div class="letter shadow-inner text-gray-800">
                 <p id="date-label" class="text-[10px] uppercase tracking-widest text-rose-500 font-bold mb-2"></p>
                 <p id="message-text" class="leading-tight"></p>
