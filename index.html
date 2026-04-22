@@ -115,16 +115,32 @@
         }
 
         // Initialize Message
-        const today = new Date().toISOString().split('T')[0];
-        const messageDisplay = document.getElementById('message-text');
-        const dateDisplay = document.getElementById('date-label');
-
-        dateDisplay.innerText = today.replace(/-/g, '.');
-        messageDisplay.innerText = MESSAGES[today] || "Check back tomorrow for a new note! ❤️";
+        //const today = new Date().toISOString().split('T')[0];
 
 	console.log("UTC ISO String:", new Date().toISOString());
 	console.log("Local Date String:", new Date().toLocaleDateString());
 	console.log("Current Timezone Offset:", new Date().getTimezoneOffset());
+
+	// 1. Get the current time in France (Europe/Paris)
+	const options = { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' };
+	const franceDateString = new Intl.DateTimeFormat('en-CA', options).format(new Date());
+
+	// 2. Format it to match your MESSAGES keys (YYYY-MM-DD)
+	// en-CA format returns YYYY-MM-DD, making it perfect for your keys.
+	const today = franceDateString;
+
+	console.log("Your Local Time:", new Date().toString());
+	console.log("Current Date in France:", today);
+
+	// 3. Initialize UI
+	const messageDisplay = document.getElementById('message-text');
+	const dateDisplay = document.getElementById('date-label');
+
+	// Display in French format (DD.MM.YYYY) for her
+	const [y, m, d] = today.split('-');
+	dateDisplay.innerText = `${d}.${m}.${y}`;
+	messageDisplay.innerText = MESSAGES[today] || "Un petit mot pour plus tard... ❤️";
+
     </script>
 </body>
 </html>
