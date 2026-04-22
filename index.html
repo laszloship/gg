@@ -99,12 +99,22 @@
     <p id="instruction" class="mt-32 text-rose-400 font-medium animate-pulse">Click to open</p>
 
     <script>
-        const MESSAGES = {
+        /*const MESSAGES = {
             "2026-04-21": "I am so proud of how hard you are working on your goals. You got this!",
             "2026-04-22": "Counting down the days until our next adventure. Thinking of you.",
             "2026-04-23": "Just a reminder that you're the best part of my day.",
             // Add more dates here
-        };
+        };*/
+	const MESSAGES = {
+	    "2026-04-22": `
+	        <div class="text-center">
+	            <h3 class="text-lg font-bold">Good morning, G!</h3>
+	            <p class="mt-2">I am so proud of your hard work today.</p>
+	            <img src="heart.png" class="w-8 mx-auto mt-4">
+	        </div>
+	    `,
+	    "2026-04-23": `Enjoy your time in <span class="text-blue-500">France!</span>`
+	};
 
         function openEnvelope() {
             const env = document.getElementById('envelope');
@@ -121,26 +131,44 @@
 	console.log("Local Date String:", new Date().toLocaleDateString());
 	console.log("Current Timezone Offset:", new Date().getTimezoneOffset());
 
-	// 1. Get the current time in France (Europe/Paris)
-	const options = { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' };
-	const franceDateString = new Intl.DateTimeFormat('en-CA', options).format(new Date());
+	// 1. Get the current date in YYYY-MM-DD format for France
+	const dateOptions = { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' };
+	const today = new Intl.DateTimeFormat('en-CA', dateOptions).format(new Date());
 
-	// 2. Format it to match your MESSAGES keys (YYYY-MM-DD)
-	// en-CA format returns YYYY-MM-DD, making it perfect for your keys.
-	const today = franceDateString;
+	// 2. Get the full local time in France (HH:MM:SS)
+	const timeOptions = { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+	const franceTime = new Intl.DateTimeFormat('en-GB', timeOptions).format(new Date());
 
-	console.log("Your Local Time:", new Date().toString());
+	console.log("Your Local Time (MDT):", new Date().toString());
 	console.log("Current Date in France:", today);
+	console.log("Current Time in France:", franceTime);
 
 	// 3. Initialize UI
 	const messageDisplay = document.getElementById('message-text');
 	const dateDisplay = document.getElementById('date-label');
 
-	// Display in French format (DD.MM.YYYY) for her
-	const [y, m, d] = today.split('-');
-	dateDisplay.innerText = `${d}.${m}.${y}`;
-	messageDisplay.innerText = MESSAGES[today] || "Un petit mot pour plus tard... ❤️";
+	// 4. Display in French format (DD.MM.YYYY) for her
+	//const [y, m, d] = today.split('-');
+	//dateDisplay.innerText = `${d}.${m}.${y}`;
+	//messageDisplay.innerText = MESSAGES[today] || "Un petit mot pour plus tard... ❤️";
 
+	// 4. Get the date string in the format: "Wednesday, April 22, 2026"
+	const displayOptions = {
+	    timeZone: 'Europe/Paris',
+	    weekday: 'long',
+	    year: 'numeric',
+	    month: 'long',
+	    day: 'numeric'
+	};
+
+	const fullDateFrench = new Intl.DateTimeFormat('en-US', displayOptions).format(new Date());
+
+	// 5. Update the UI
+	dateDisplay.innerText = fullDateFrench;
+	messageDisplay.innerHTML = MESSAGES[today] || "Un petit mot pour plus tard... ❤️";
+
+	console.log("Displayed Date for Her:", fullDateFrench);
+	
     </script>
 </body>
 </html>
