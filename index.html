@@ -131,7 +131,7 @@
 
     .envelope.open .letter {
         /* Adjust this based on how much of the note you want to see */
-        transform: translateY(-380px);
+        transform: translateY(-360px); /* UPDATE! */
     }
 
     /* Immediate drop on close */
@@ -176,8 +176,27 @@
     }
 
     #message-text, #message-text * {
-        font-family: "Comic Sans MS", Georgia, "Apple Chancery", "Lucida Sans Unicode", "Lucida Grande", sans-serif !important;
-        color: red !important;
+        font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #fda4af; /* rose-300 */
+        text-align: center;
+        overflow: visible;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    hr::after {
+        content: '🇫🇷'; /* You can also use '•' or '❦' */
+        display: inline-block;
+        position: relative;
+        top: -13px;
+        padding: 0 10px;
+        background: #fff1f2; /* Matches your bg-rose-50 / peach color */
+        color: #f43f5e; /* rose-500 */
+        font-size: 14px;
     }
 
 </style>
@@ -207,27 +226,14 @@
 	const MESSAGES = {
 	    "2026-04-22": `
 	        <div class="text-center">
-	            <h3 class="text-lg font-bold">Good morning, G!</h3>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-	            <img src="heart.png" class="w-8 mx-auto mt-4">
-                <h3 class="text-lg font-bold">Good morning, G!</h3>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <img src="heart.png" class="w-8 mx-auto mt-4">
-                <h3 class="text-lg font-bold">Good morning, G!</h3>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <img src="heart.png" class="w-8 mx-auto mt-4">
-                <h3 class="text-lg font-bold">Good morning, G!</h3>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <img src="heart.png" class="w-8 mx-auto mt-4">
-                <h3 class="text-lg font-bold">Good morning, G!</h3>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <img src="heart.png" class="w-8 mx-auto mt-4">
-                <h3 class="text-lg font-bold">Good morning, G!</h3>
-                <p class="mt-2">I am so proud of your hard work today.</p>
-                <img src="heart.png" class="w-8 mx-auto mt-4">
+	            <h3 class="text-lg font-bold" style="text-align: justify;">BREAKING NEWS: The City of Lights has been officially been renamed the City of the Most Gorgeous Woman! #truestory</h3>
+                <br/>
+                    <p class="mt-2" style="text-align: justify;">Gorgeous Gabriela arrives today while Henry Cavill's flight to Paris has been delayed indefinitely:[</p>
+                <hr/>
+                <h1 class="text-lg font-bold">Bonjour Mademoiselle...<br/>Vous êtes arrivée!</h1>
 	        </div>
 	    `,
-	    "2026-04-23": `Enjoy your time in <span class="text-blue-500">France!</span>`
+	    "2026-04-23": `Enjoy your time in <span class="text-blue-500">France!</span><p class="mt-2">“The traveler sees what she sees. The tourist sees what she has come to see.” ― G.K. Chesterton</p>`
 	};
 
     /**
