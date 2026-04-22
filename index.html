@@ -9,7 +9,21 @@
     :root {
         --env-color: #f43f5e; 
         --env-dark: #be123c;  
+        --line-color: #9f1239;  /* Rose 800 (Darker red line) */
         --paper-color: #fffaf0;
+    }
+
+    .envelope-wrapper {
+        perspective: 1000px;
+        display: flex;
+        justify-content: center;
+        /* Positions the envelope toward the bottom */
+        align-items: flex-end; 
+        /* Adjust this padding to move it higher or lower from the edge */
+        padding-bottom: 100px; 
+        height: 100vh;
+        /* Keeps the animation clean if the letter goes high */
+        overflow: hidden; 
     }
 
     .envelope {
@@ -18,6 +32,7 @@
         height: 200px;
         background: var(--env-dark);
         border-radius: 0 0 8px 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         cursor: pointer;
         /* The container itself must not cut off the flap */
     }
@@ -43,6 +58,17 @@
         clip-path: polygon(0 0%, 50% 50%, 100% 0%, 100% 100%, 0 100%);
         z-index: 2;
     }
+    .envelope::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 100%; height: 100%;
+        /* We use a slightly darker color for the line */
+        background-color: var(--line-color);
+        /* The same path, but we move the points slightly to create a 2px offset */
+        clip-path: polygon(0 0%, 50% 50%, 100% 0%, 100% 1%, 50% 51%, 0 1%);
+        z-index: 2;
+    }
 
     /* 3. THE LETTER (Lengthy Note Fix) */
     .letter {
@@ -53,7 +79,7 @@
         width: 90%;
         /* Let height expand, but the pocket hides the excess */
         height: auto;
-        min-height: 150px;
+        min-height: 180px;
         background: var(--paper-color);
         padding: 20px;
         z-index: 1; 
@@ -68,7 +94,7 @@
 
     .envelope.open .letter {
         /* Adjust this based on how much of the note you want to see */
-        transform: translateY(-220px);
+        transform: translateY(-380px);
     }
 
     /* Immediate drop on close */
@@ -103,6 +129,28 @@
 	        <div class="text-center">
 	            <h3 class="text-lg font-bold">Good morning, G!</h3>
 	            <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <p class="mt-2">I am so proud of your hard work today.</p>
 	            <img src="heart.png" class="w-8 mx-auto mt-4">
                 <h3 class="text-lg font-bold">Good morning, G!</h3>
                 <p class="mt-2">I am so proud of your hard work today.</p>
