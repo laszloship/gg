@@ -5,84 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Note</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            --env-color: #f43f5e; /* Rose 500 */
-            --env-dark: #be123c;  /* Rose 700 */
-            --paper-color: #fffaf0;
-        }
+<style>
+    :root {
+        --env-color: #f43f5e; 
+        --env-dark: #be123c;  
+        --paper-color: #fffaf0;
+    }
 
-        .envelope-wrapper {
-            perspective: 1000px;
-        }
+    .envelope {
+        position: relative;
+        width: 300px;
+        height: 200px;
+        background: var(--env-dark);
+        border-radius: 0 0 8px 8px;
+        cursor: pointer;
+        /* The container itself must not cut off the flap */
+    }
 
-        .envelope {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background: var(--env-dark);
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+    /* 1. THE FLAP */
+    .flap {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--env-color);
+        clip-path: polygon(0 0, 50% 50%, 100% 0);
+        transform-origin: top;
+        z-index: 3;
+        transition: transform 1.5s ease-in-out, z-index 0s 0.75s;
+    }
 
-        /* The Flap */
-        .flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--env-color);
-            clip-path: polygon(0 0, 50% 50%, 100% 0);
-            transition: transform 0.5s ease-in-out;
-            transform-origin: top;
-            z-index: 3;
-        }
+    /* 2. THE FRONT POCKET (Solid Face) */
+    .envelope::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--env-color);
+        /* This shape creates the pocket and hides the bottom of the letter */
+        clip-path: polygon(0 0%, 50% 50%, 100% 0%, 100% 100%, 0 100%);
+        z-index: 2;
+    }
 
-        /* The Front Pockets (Side/Bottom folds) */
-        .envelope::before {
-            content: '';
-            position: absolute;
-            z-index: 2;
-            width: 0; height: 0;
-            border-style: solid;
-            border-width: 100px 150px 100px 150px;
-            border-color: transparent var(--env-color) var(--env-color) var(--env-color);
-            border-radius: 0 0 8px 8px;
-        }
+    /* 3. THE LETTER (Lengthy Note Fix) */
+    .letter {
+        position: absolute;
+        /* Anchor to top so extra length stays hidden inside the envelope body */
+        top: 10%; 
+        left: 5%;
+        width: 90%;
+        /* Let height expand, but the pocket hides the excess */
+        height: auto;
+        min-height: 150px;
+        background: var(--paper-color);
+        padding: 20px;
+        z-index: 1; 
+        transition: transform 1s ease-in-out 0.8s;
+    }
 
-        /* The Note */
-        .letter {
-            position: absolute;
-            bottom: 10px;
-            left: 10%;
-            width: 80%;
-            height: 80%;
-            background: var(--paper-color);
-            padding: 20px;
-            border-radius: 4px;
-            transition: transform 0.5s ease-in-out;
-            z-index: 1;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+    /* --- THE MOTION --- */
+    .envelope.open .flap {
+        transform: rotateX(180deg);
+        z-index: 0;
+    }
 
-        /* Open State Animations */
-        .envelope.open .flap {
-            transform: rotateX(180deg);
-            z-index: 0;
-        }
+    .envelope.open .letter {
+        /* Adjust this based on how much of the note you want to see */
+        transform: translateY(-220px);
+    }
 
-        .envelope.open .letter {
-            transform: translateY(-120px);
-            z-index: 2;
-        }
-
-        .envelope:hover {
-            transform: translateY(-5px);
-        }
-    </style>
+    /* Immediate drop on close */
+    .envelope:not(.open) .letter {
+        transition-delay: 0s;
+    }
+</style>
 </head>
 <body class="bg-rose-50 flex flex-col items-center justify-center min-h-screen p-4">
 
@@ -99,33 +92,62 @@
     <p id="instruction" class="mt-32 text-rose-400 font-medium animate-pulse">Click to open</p>
 
     <script>
-        /*const MESSAGES = {
-            "2026-04-21": "I am so proud of how hard you are working on your goals. You got this!",
-            "2026-04-22": "Counting down the days until our next adventure. Thinking of you.",
-            "2026-04-23": "Just a reminder that you're the best part of my day.",
-            // Add more dates here
-        };*/
+    /*const MESSAGES = {
+        "2026-04-21": "I am so proud of how hard you are working on your goals. You got this!",
+        "2026-04-22": "Counting down the days until our next adventure. Thinking of you.",
+        "2026-04-23": "Just a reminder that you're the best part of my day.",
+        // Add more dates here
+    };*/
 	const MESSAGES = {
 	    "2026-04-22": `
 	        <div class="text-center">
 	            <h3 class="text-lg font-bold">Good morning, G!</h3>
 	            <p class="mt-2">I am so proud of your hard work today.</p>
 	            <img src="heart.png" class="w-8 mx-auto mt-4">
+                <h3 class="text-lg font-bold">Good morning, G!</h3>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <img src="heart.png" class="w-8 mx-auto mt-4">
+                <h3 class="text-lg font-bold">Good morning, G!</h3>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <img src="heart.png" class="w-8 mx-auto mt-4">
+                <h3 class="text-lg font-bold">Good morning, G!</h3>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <img src="heart.png" class="w-8 mx-auto mt-4">
+                <h3 class="text-lg font-bold">Good morning, G!</h3>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <img src="heart.png" class="w-8 mx-auto mt-4">
+                <h3 class="text-lg font-bold">Good morning, G!</h3>
+                <p class="mt-2">I am so proud of your hard work today.</p>
+                <img src="heart.png" class="w-8 mx-auto mt-4">
 	        </div>
 	    `,
 	    "2026-04-23": `Enjoy your time in <span class="text-blue-500">France!</span>`
 	};
 
-        function openEnvelope() {
-            const env = document.getElementById('envelope');
-            const instruction = document.getElementById('instruction');
-            
-            env.classList.toggle('open');
-            instruction.style.opacity = env.classList.contains('open') ? '0' : '1';
-        }
+    /**
+     * Toggles the envelope state.
+     * The 1-2-3 sequence is handled by CSS transition-delay:
+     * 1. Flap opens (0s delay)
+     * 2. Flap z-index swaps to back (0.75s delay)
+     * 3. Letter moves up (0.8s delay)
+     */
+    function openEnvelope() {
+        const env = document.getElementById('envelope');
+        
+        // Toggle the 'open' class
+        // CSS transitions will handle the staggered timing
+        env.classList.toggle('open');
 
-        // Initialize Message
-        //const today = new Date().toISOString().split('T')[0];
+        // Optional: Log for debugging
+        if (env.classList.contains('open')) {
+            console.log("Opening... Flap initiated, Letter will follow in 0.8s");
+        } else {
+            console.log("Closing... Letter dropping immediately, Flap follows.");
+        }
+    }
+
+    // Initialize Message
+    //const today = new Date().toISOString().split('T')[0];
 
 	console.log("UTC ISO String:", new Date().toISOString());
 	console.log("Local Date String:", new Date().toLocaleDateString());
