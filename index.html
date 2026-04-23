@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Note</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Playwrite+NZ+Guides&display=swap" rel="stylesheet">
+
+
 <style>
     :root {
         --env-color: #f43f5e;   /* Rose 500 */
@@ -176,7 +182,7 @@
         animation: none; /* Stops animating once opened */
     }
 
-    #message-text, #message-text * {
+    #message-text {
         font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     }
 
@@ -194,7 +200,7 @@
     }
 
     hr::after {
-        content: '🇫🇷'; /* You can also use '•' or '❦' */
+        content: '🇫🇷'; /* 🇫🇷 */
         display: inline-block;
         position: relative;
         top: -13px;
@@ -203,6 +209,13 @@
         color: #f43f5e; /* rose-500 */
         font-size: 14px;
     }
+
+    .parisienne-regular {
+        font-family: "Parisienne", cursive;
+        font-weight: 400;
+        font-style: normal;
+    }
+
 
 </style>
 </head>
@@ -238,7 +251,25 @@
                 <h1 class="text-lg font-bold">Bonjour Mademoiselle...<br/>Vous êtes arrivée!</h1>
 	        </div>
 	    `,
-	    "2026-04-23": `Enjoy your time in <span class="text-blue-500">France!</span><p class="mt-2">“The traveler sees what she sees. The tourist sees what she has come to see.” ― G.K. Chesterton</p>`
+        "2026-04-23": `
+            <div class="text-center">
+                <h3 class="text-3xl font-bold parisienne-regular">Bonjour Mademoiselle!</h3>
+                <hr class="mt-2 mb-2" />
+                <h2 class="text-2xl font-bold parisienne-regular">May You enjoy your first morning coffee in Paris.<br/>☕ #caffeine</h2>
+                <img src="assets/cafe_de_flore.png" alt="CAFE DE FLORE" />
+            </div>
+        `,
+        "2026-04-30": `
+            <div class="text-center">
+                <h3 class="text-lg font-bold" style="text-align: justify;">La beauté est dans la rue.</h3>
+                <br/>
+                    <p class="mt-2" style="text-align: justify;"></p>
+                <hr/>
+                <h1 class="text-lg font-bold">Bonjour Mademoiselle...<br/>Vous êtes arrivée!</h1>
+                <img src="/assets/beauty.jpg" alt="La beauté est dans la rue." />
+            </div>
+        `,
+	    "2026-04-31": `Enjoy your first morning in Francteime in <span class="text-blue-500">France!</span><p class="mt-2 parisienne-regular"><b>“The traveler sees what she sees. The tourist sees what she has come to see.”</b> ― G.K. Chesterton</p>`
 	};
 
     /**
@@ -273,7 +304,22 @@
 	// 1. Get the current date in YYYY-MM-DD format for France
 	//const dateOptions = { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' };
     const dateOptions = { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' };
-	const today = new Intl.DateTimeFormat('en-CA', dateOptions).format(new Date());
+	//const today = new Intl.DateTimeFormat('en-CA', dateOptions).format(new Date());
+
+    // 1. Get the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const dateOverride = urlParams.get('date');
+
+    let today;
+
+    // 2. Check if a valid override exists
+    if (dateOverride && /^\d{4}-\d{2}-\d{2}$/.test(dateOverride)) {
+        // Use the URL date (treating it as a localized date string)
+        today = dateOverride;
+    } else {
+        // Fallback to your current UTC logic
+        today = new Date().toISOString().split('T')[0];
+    }
 
 	// 2. Get the full local time in France (HH:MM:SS)
 	//const timeOptions = { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
@@ -295,7 +341,7 @@
 
 	// 4. Get the date string in the format: "Wednesday, April 22, 2026"
 	const displayOptions = {
-	    timeZone: 'Europe/Paris',
+	    timeZone: 'UTC',
 	    weekday: 'long',
 	    year: 'numeric',
 	    month: 'long',
