@@ -8,8 +8,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Playwrite+NZ+Guides&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plaster&display=swap" rel="stylesheet">
 
 <style>
     :root {
@@ -137,7 +138,7 @@
 
     .envelope.open .letter {
         /* Adjust this based on how much of the note you want to see */
-        transform: translateY(-360px); /* UPDATE! */
+        transform: translateY(-420px); /* UPDATE! */
     }
 
     /* Immediate drop on close */
@@ -210,11 +211,28 @@
         font-size: 14px;
     }
 
+
+
+
+
     .parisienne-regular {
         font-family: "Parisienne", cursive;
         font-weight: 400;
         font-style: normal;
     }
+
+    .lavishly-yours-regular {
+        font-family: "Lavishly Yours", cursive;
+        font-weight: 400;
+        font-style: normal;
+    }
+    .plaster-regular {
+        font-family: "Plaster", system-ui;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+
 
 
 </style>
@@ -259,6 +277,21 @@
                 <img src="assets/cafe_de_flore.png" alt="CAFE DE FLORE" />
             </div>
         `,
+        "2026-04-24": `
+            <div class="text-center">
+                <h1 class="text-xl font-bold plaster-regular">Sending a thousand kisses<span class="text-4xl">➹➹➹</span></h1>
+                <hr class="mt-2 mb-2" />
+                <h2 class="text-2xl font-bold parisienne-regular mb-2">May my aim be precise<span class="text-4xl">⌖</span></h2>
+                <img src="assets/cupid.png" alt="CUPID" />
+            </div>
+        `,
+
+
+
+
+
+
+
         "2026-04-30": `
             <div class="text-center">
                 <h3 class="text-lg font-bold" style="text-align: justify;">La beauté est dans la rue.</h3>
@@ -352,7 +385,7 @@
 
 	// 5. Update the UI
 	dateDisplay.innerText = fullDateFrench;
-	messageDisplay.innerHTML = MESSAGES[today] || "Un petit mot pour plus tard... ❤️";
+	messageDisplay.innerHTML = MESSAGES[today] || "Please visit soon for daily message!<br/>Un petit mot pour plus tard... ❤️";
 
 	console.log("Displayed Date for Her:", fullDateFrench);
 	
