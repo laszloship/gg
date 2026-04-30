@@ -463,7 +463,7 @@
 	    day: 'numeric'
 	};
 
-	const fullDateFrench = new Intl.DateTimeFormat('en-US', displayOptions).format(new Date());
+	const fullDateFrench = new Intl.DateTimeFormat('en-US', displayOptions).format(new Date(today));
 
 	// 5. Update the UI
 	dateDisplay.innerText = fullDateFrench;
