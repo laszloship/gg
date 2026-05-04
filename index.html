@@ -277,9 +277,36 @@
         </div>
     </div>
 
+    <div class="fixed bottom-1 flex gap-4 z-50">
+        <button onclick="navigateDate(-1)" class="px-4 py-2 bg-white/80 backdrop-blur rounded-full shadow-sm text-rose-500 hover:bg-rose-50 transition">
+            ← Previous
+        </button>
+        <button onclick="navigateDate(1)" class="px-4 py-2 bg-white/80 backdrop-blur rounded-full shadow-sm text-rose-500 hover:bg-rose-50 transition">
+            Next →
+        </button>
+    </div>
+
     <!--<p id="instruction" class="_mt-32 text-rose-400 font-medium animate-pulse">Click to open</p>-->
 
     <script>
+
+    function navigateDate(daysToAdd) {
+        // 1. Create a date object from the current 'today' variable
+        // We add T12:00:00 to avoid timezone 'jumping'
+        //const currentDate = new Date(today + 'T12:00:00');
+        const currentDate = new Date(today);
+
+        
+        // 2. Add or subtract the day
+        currentDate.setDate(currentDate.getDate() + daysToAdd);
+        
+        // 3. Format back to YYYY-MM-DD
+        const newDateStr = currentDate.toISOString().split('T')[0];
+        
+        // 4. Reload the page with the new date
+        window.location.search = `?date=${newDateStr}`;
+    }
+
     /*const MESSAGES = {
         "2026-04-21": "I am so proud of how hard you are working on your goals. You got this!",
         "2026-04-22": "Counting down the days until our next adventure. Thinking of you.",
@@ -369,15 +396,30 @@
                 <h1 class="text-2xl font-bold parisienne-regular _dynalight-regular text-justify">The distance has vanished, leaving only the cadence of the pavement between You and the adventure.</h2>
                 <hr class="mt-0 mb-0" />
                 <h2 class="text-lg font-bold charm-bold _dynalight-regular mb-1">"There is no path, paths are made by walking." — Antonio Machado</h2>
+
+                <hr class="mt-0 mb-0" />
+                <h1 class="mb-1 text-2xl font-bold parisienne-regular _dynalight-regular text-justify">P.S. Joyeux Anniversaire<span class="text-4xl">➹</span></h2>
                 <img src="assets/cobblestones_c.png" alt="COBBLESTONES" />
+            </div>
+        `,
+        "2026-05-02": `
+            <div class="text-center">
+                <h1 class="text-2xl font-bold parisienne-regular _dynalight-regular text-center">Bon Voyage!</h2>
+                <hr class="mt-0 mb-0" />
+                <h1 class="text-2xl font-bold parisienne-regular _dynalight-regular text-center"><span class="text-4xl">🚕🚆🚢🌎</span></h2>
             </div>
         `,
 
 
 
 
-
-
+        "2026-99-01": `
+            <div class="text-center">
+                <h1 class="text-2xl font-bold parisienne-regular _dynalight-regular text-center">Joyeux Anniversaire!</h2>
+                <hr class="mt-0 mb-0" />
+                <h1 class="text-2xl font-bold parisienne-regular _dynalight-regular text-center"><span class="text-4xl">➹➹➹</span></h2>
+            </div>
+        `,
 
         
         "2026-99-01": `
